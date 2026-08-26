@@ -1,14 +1,10 @@
 const Comment = require('../models/Comment');
 const Post = require('../models/Post');
 
-// @desc    Add comment to post
-// @route   POST /api/comments
-// @access  Private
 const addComment = async (req, res) => {
   try {
     const { text, postId } = req.body;
     
-    // Check if post exists
     const post = await Post.findById(postId);
     if (!post) {
       return res.status(404).json({
@@ -40,9 +36,6 @@ const addComment = async (req, res) => {
   }
 };
 
-// @desc    Get comments for a post
-// @route   GET /api/comments/:postId
-// @access  Public
 const getComments = async (req, res) => {
   try {
     const comments = await Comment.find({ post: req.params.postId })
@@ -64,9 +57,6 @@ const getComments = async (req, res) => {
   }
 };
 
-// @desc    Delete comment
-// @route   DELETE /api/comments/:id
-// @access  Private
 const deleteComment = async (req, res) => {
   try {
     const comment = await Comment.findById(req.params.id);
@@ -78,7 +68,6 @@ const deleteComment = async (req, res) => {
       });
     }
     
-    // Check ownership
     if (comment.user.toString() !== req.user.id) {
       return res.status(401).json({
         success: false,

@@ -1,8 +1,5 @@
 const Post = require('../models/Post');
 
-// @desc    Get all posts
-// @route   GET /api/posts
-// @access  Public
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find()
@@ -25,9 +22,6 @@ const getPosts = async (req, res) => {
   }
 };
 
-// @desc    Get single post
-// @route   GET /api/posts/:id
-// @access  Public
 const getPostById = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id)
@@ -59,9 +53,6 @@ const getPostById = async (req, res) => {
   }
 };
 
-// @desc    Create new post
-// @route   POST /api/posts
-// @access  Private
 const createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -89,9 +80,6 @@ const createPost = async (req, res) => {
   }
 };
 
-// @desc    Update post
-// @route   PUT /api/posts/:id
-// @access  Private
 const updatePost = async (req, res) => {
   try {
     let post = await Post.findById(req.params.id);
@@ -103,7 +91,6 @@ const updatePost = async (req, res) => {
       });
     }
     
-    // Check ownership
     if (post.author.toString() !== req.user.id) {
       return res.status(401).json({
         success: false,
@@ -131,9 +118,6 @@ const updatePost = async (req, res) => {
   }
 };
 
-// @desc    Delete post
-// @route   DELETE /api/posts/:id
-// @access  Private
 const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -145,7 +129,6 @@ const deletePost = async (req, res) => {
       });
     }
     
-    // Check ownership
     if (post.author.toString() !== req.user.id) {
       return res.status(401).json({
         success: false,
@@ -169,9 +152,6 @@ const deletePost = async (req, res) => {
   }
 };
 
-// @desc    Like/Unlike post
-// @route   PUT /api/posts/:id/like
-// @access  Private
 const likePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -183,7 +163,7 @@ const likePost = async (req, res) => {
       });
     }
     
-    // Check if already liked
+    // Checking if already liked
     if (post.likes.includes(req.user.id)) {
       // Unlike
       post.likes = post.likes.filter(like => like.toString() !== req.user.id);

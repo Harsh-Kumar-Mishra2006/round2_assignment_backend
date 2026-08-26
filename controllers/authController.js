@@ -1,14 +1,10 @@
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 
-// @desc    Register user
-// @route   POST /api/auth/signup
-// @access  Public
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
       return res.status(400).json({
@@ -17,7 +13,6 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Create user
     const user = await User.create({
       name,
       email,
@@ -48,14 +43,10 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
-// @access  Public
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check for user email
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
@@ -82,6 +73,7 @@ const loginUser = async (req, res) => {
       email: user.email,
       token: generateToken(user._id)
     });
+    
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -92,9 +84,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get current user
-// @route   GET /api/auth/me
-// @access  Private
+
 const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);

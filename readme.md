@@ -96,4 +96,4 @@ These are the backend API endpoints configured in route files of _authRoutes.js_
 
 ## :student: Author
 
-**Harsh Kumar Mishra**
+## **Harsh Kumar Mishra**

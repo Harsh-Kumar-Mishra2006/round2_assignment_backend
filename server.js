@@ -4,10 +4,10 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
-// Load env vars
+// Loading env
 dotenv.config();
 
-// Connect to database
+// Connecting to database
 connectDB();
 
 // Route files
@@ -20,16 +20,15 @@ const app = express();
 // Body parser
 app.use(express.json());
 
-// Configure CORS for frontend integration
+// CORS for frontend integration
 const allowedOrigins = [
   'https://round2-assignment-frontend.onrender.com',
-  'http://localhost:5173',  // For local development
-  'http://localhost:3000'    // Alternative local port
+  'http://localhost:5173', 
+  'http://localhost:3000'   
 ];
 
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, postman)
     if (!origin) return callback(null, true);
     
     if (allowedOrigins.indexOf(origin) === -1) {
@@ -38,7 +37,7 @@ app.use(cors({
     }
     return callback(null, true);
   },
-  credentials: true,  // If you're using cookies/sessions
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
@@ -52,7 +51,7 @@ app.use('/api/comments', commentRoutes);
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'Blog Platform API is running 🚀',
+    message: 'Blog Platform API is running successfully',
     version: '1.0.0',
     frontend: 'https://round2-assignment-frontend.onrender.com',
     endpoints: {
@@ -63,22 +62,21 @@ app.get('/', (req, res) => {
   });
 });
 
-// Error handler (should be last)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   console.log(`
-  🚀 Server running on port ${PORT}
-  📝 Environment: ${process.env.NODE_ENV}
-  🔗 Local: http://localhost:${PORT}
-  🔗 Frontend: https://round2-assignment-frontend.onrender.com
+   Server running on port ${PORT}
+   Environment: ${process.env.NODE_ENV}
+   Local: http://localhost:${PORT}
+   Frontend: https://round2-assignment-frontend.onrender.com
   `);
 });
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
-  console.log(`❌ Error: ${err.message}`);
+  console.log(` Error: ${err.message}`);
   server.close(() => process.exit(1));
 });
